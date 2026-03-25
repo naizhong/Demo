@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>西交新加坡校友会 - 测试指南</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans SC', sans-serif; color: #1e293b; background: #f8fafc; line-height: 1.7; }
+        .header { background: linear-gradient(135deg, #4950bc, #3730a3); color: #fff; padding: 40px 32px; }
+        .header h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+        .header p { opacity: 0.8; font-size: 15px; }
+        .container { max-width: 960px; margin: 0 auto; padding: 32px 24px; }
+        h2 { font-size: 22px; font-weight: 700; margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 3px solid #4950bc; color: #4950bc; }
+        h2:first-child { margin-top: 0; }
+        h3 { font-size: 17px; font-weight: 700; margin: 24px 0 10px; color: #1e293b; }
+        p, li { font-size: 14px; color: #475569; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+        th { background: #4950bc; color: #fff; padding: 10px 14px; text-align: left; font-weight: 600; }
+        td { padding: 9px 14px; border-bottom: 1px solid #e2e8f0; }
+        tr:hover td { background: #f1f5f9; }
+        .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+        .b-admin { background: #ede9fe; color: #6d28d9; }
+        .b-board { background: #fef3c7; color: #d97706; }
+        .b-alumni { background: #d1fae5; color: #059669; }
+        .b-pending { background: #fef9c3; color: #ca8a04; }
+        .step-box { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px 24px; margin: 12px 0; }
+        .step-num { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: #4950bc; color: #fff; font-size: 13px; font-weight: 700; margin-right: 10px; }
+        .step-title { font-weight: 700; font-size: 15px; }
+        .note { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0; font-size: 13px; color: #92400e; }
+        .success { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0; font-size: 13px; color: #166534; }
+        .danger { background: #fef2f2; border-left: 4px solid #ef4444; padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0; font-size: 13px; color: #991b1b; }
+        code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-family: 'SF Mono', Menlo, monospace; color: #4950bc; }
+        .toc { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px 24px; margin-bottom: 32px; }
+        .toc h3 { margin-top: 0; }
+        .toc ol { padding-left: 20px; }
+        .toc li { margin: 6px 0; }
+        .toc a { color: #4950bc; text-decoration: none; font-weight: 500; }
+        .toc a:hover { text-decoration: underline; }
+        .url { font-family: monospace; background: #1e293b; color: #22d3ee; padding: 8px 16px; border-radius: 8px; display: inline-block; margin: 8px 0; font-size: 13px; }
+        ul { padding-left: 20px; margin: 8px 0; }
+        li { margin: 4px 0; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div style="max-width:960px;margin:0 auto;">
+        <h1>西交新加坡校友会 — 系统测试指南</h1>
+        <p>版本 1.0 · 2026年3月 · Node.js + Express + SQLite 后端</p>
+    </div>
+</div>
+
+<div class="container">
+
+<div class="toc">
+    <h3>目录</h3>
+    <ol>
+        <li><a href="#start">访问系统</a></li>
+        <li><a href="#accounts">测试账号一览</a></li>
+        <li><a href="#vote">投票功能测试（重点）</a></li>
+        <li><a href="#register">注册与审批流程</a></li>
+        <li><a href="#admin">管理后台功能</a></li>
+        <li><a href="#news">新闻动态</a></li>
+        <li><a href="#forum">互动论坛</a></li>
+        <li><a href="#profile">个人中心</a></li>
+        <li><a href="#members">校友名录</a></li>
+        <li><a href="#multi">多用户并发测试</a></li>
+        <li><a href="#bug">发现Bug？通过"互动平台"提交</a></li>
+    </ol>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="start">1. 访问系统</h2>
+
+<div class="step-box">
+    <span class="step-num">1</span><span class="step-title">打开浏览器</span>
+    <p style="margin-top:8px;">在浏览器地址栏输入以下网址：</p>
+    <p><a href="http://47.129.188.193" target="_blank" class="url" style="text-decoration:none;">http://47.129.188.193</a></p>
+</div>
+<div class="step-box">
+    <span class="step-num">2</span><span class="step-title">进入首页</span>
+    <p style="margin-top:8px;">您将看到西安交通大学新加坡校友会的首页，点击右上角"登录"按钮即可使用测试账号登录。</p>
+</div>
+
+<div class="note">系统部署在 AWS 新加坡区域（ap-southeast-1），使用任何设备和浏览器均可访问。建议使用 Chrome、Safari 或 Edge 浏览器以获得最佳体验。</div>
+
+<!-- ============================================================ -->
+<h2 id="accounts">2. 测试账号一览</h2>
+
+<h3>管理员（3人）— 密码统一：<code>admin123</code></h3>
+<table>
+    <tr><th>姓名</th><th>邮箱</th><th>角色</th><th>单位/职位</th></tr>
+    <tr><td>管理员</td><td><code>admin@xjtu.sg</code></td><td><span class="badge b-admin">管理员</span></td><td>电信学院 · 计算机科学</td></tr>
+    <tr><td>林志华</td><td><code>linzhihua@xjtu.sg</code></td><td><span class="badge b-admin">管理员</span></td><td>校友会秘书处 · 秘书长</td></tr>
+    <tr><td>周海燕</td><td><code>zhouhaiyan@xjtu.sg</code></td><td><span class="badge b-admin">管理员</span></td><td>校友会秘书处 · 副秘书长</td></tr>
+</table>
+
+<h3>理事（6人）— 密码统一：<code>board123</code></h3>
+<table>
+    <tr><th>姓名</th><th>邮箱</th><th>角色</th><th>单位/职位</th></tr>
+    <tr><td>张伟</td><td><code>zhangwei@xjtu.sg</code></td><td><span class="badge b-board">理事</span></td><td>华为新加坡 · 高级工程师</td></tr>
+    <tr><td>李芳</td><td><code>lifang@xjtu.sg</code></td><td><span class="badge b-board">理事</span></td><td>星展银行 · 副总裁</td></tr>
+    <tr><td>王强</td><td><code>wangqiang@xjtu.sg</code></td><td><span class="badge b-board">理事</span></td><td>字节跳动新加坡 · 技术总监</td></tr>
+    <tr><td>刘国栋</td><td><code>liuguodong@xjtu.sg</code></td><td><span class="badge b-board">理事</span></td><td>胜科工业 · 运营总监</td></tr>
+    <tr><td>杨丽萍</td><td><code>yangliping@xjtu.sg</code></td><td><span class="badge b-board">理事</span></td><td>淡马锡 · 投资经理</td></tr>
+    <tr><td>吴建明</td><td><code>wujianming@xjtu.sg</code></td><td><span class="badge b-board">理事</span></td><td>新加坡电信 · 首席架构师</td></tr>
+</table>
+
+<h3>校友（13人已通过 + 2人待审核）— 密码统一：<code>user123</code></h3>
+<table>
+    <tr><th>姓名</th><th>邮箱</th><th>状态</th><th>单位/专业</th></tr>
+    <tr><td>陈思远</td><td><code>chensiyuan@gmail.com</code></td><td><span class="badge b-alumni">已通过</span></td><td>NUS · 计算机科学</td></tr>
+    <tr><td>王梦琪</td><td><code>wangmengqi@gmail.com</code></td><td><span class="badge b-alumni">已通过</span></td><td>NTU · 材料工程</td></tr>
+    <tr><td>李浩然</td><td><code>lihaoran@gmail.com</code></td><td><span class="badge b-alumni">已通过</span></td><td>SMU · 金融学</td></tr>
+    <tr><td>孙晓婷</td><td><code>sunxiaoting@gmail.com</code></td><td><span class="badge b-alumni">已通过</span></td><td>NUS · 生物医学工程</td></tr>
+    <tr><td>黄志强</td><td><code>huangzhiqiang@gmail.com</code></td><td><span class="badge b-alumni">已通过</span></td><td>Grab · 自动化</td></tr>
+    <tr><td>郑雨欣</td><td><code>zhengyuxin@gmail.com</code></td><td><span class="badge b-alumni">已通过</span></td><td>汇丰银行 · 英语</td></tr>
+    <tr><td>马天宇</td><td><code>matianyu@gmail.com</code></td><td><span class="badge b-alumni">已通过</span></td><td>戴森新加坡 · 工业设计</td></tr>
+    <tr><td>许文静</td><td><code>xuwenjing@gmail.com</code></td><td><span class="badge b-alumni">已通过</span></td><td>壳牌亚太 · 化学工程</td></tr>
+    <tr><td>钱学森</td><td><code>qianxuesen@gmail.com</code></td><td><span class="badge b-alumni">已通过</span></td><td>NTU · 飞行器设计</td></tr>
+    <tr><td>何雅琴</td><td><code>heyaqin@gmail.com</code></td><td><span class="badge b-alumni">已通过</span></td><td>新加坡中央医院 · 临床医学</td></tr>
+    <tr><td>方志远</td><td><code>fangzhiyuan@gmail.com</code></td><td><span class="badge b-alumni">已通过</span></td><td>Sea Group · 人工智能</td></tr>
+    <tr><td>韩雪梅</td><td><code>hanxuemei@gmail.com</code></td><td><span class="badge b-alumni">已通过</span></td><td>市区重建局 · 城市规划</td></tr>
+    <tr><td>唐伟杰</td><td><code>tangweijie@gmail.com</code></td><td><span class="badge b-alumni">已通过</span></td><td>大成律师事务所 · 国际法</td></tr>
+    <tr><td>赵明辉</td><td><code>zhaominghui@gmail.com</code></td><td><span class="badge b-pending">待审核</span></td><td>机械学院 · 机械工程</td></tr>
+    <tr><td>刘博文</td><td><code>liubowen@gmail.com</code></td><td><span class="badge b-pending">待审核</span></td><td>公管学院 · 公共管理</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="vote">3. 投票功能测试（重点）</h2>
+
+<div class="danger"><strong>投票功能即将投入使用，请重点测试以下流程。</strong></div>
+
+<h3>3.1 管理员/理事发起投票</h3>
+<div class="step-box">
+    <span class="step-num">1</span><span class="step-title">登录管理员账号</span>
+    <p style="margin-top:6px;">邮箱：<code>admin@xjtu.sg</code>，密码：<code>admin123</code></p>
+</div>
+<div class="step-box">
+    <span class="step-num">2</span><span class="step-title">进入管理后台 → 投票管理</span>
+    <p style="margin-top:6px;">点击顶部导航"管理后台"，然后点击"投票管理"标签页</p>
+</div>
+<div class="step-box">
+    <span class="step-num">3</span><span class="step-title">点击"发起新投票"</span>
+    <p style="margin-top:6px;">填写以下信息：</p>
+    <ul>
+        <li><strong>投票标题</strong>：例如"2026年校友会年度聚餐地点选择"</li>
+        <li><strong>说明</strong>：描述投票背景</li>
+        <li><strong>投票选项</strong>：至少2个选项，可点击"+ 添加选项"增加更多</li>
+        <li><strong>开始时间</strong>：选择开始日期和时间（精确到分钟）</li>
+        <li><strong>截止时间</strong>：选择截止日期和时间（精确到分钟）</li>
+        <li><strong>参与范围</strong>：
+            <ul>
+                <li>点击"全体校友"按钮 → 自动勾选所有成员</li>
+                <li>点击"仅理事"按钮 → 只勾选管理员和理事</li>
+                <li>点击"清空"按钮 → 取消所有勾选</li>
+                <li>可逐人手动勾选/取消，实现精准控制</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<div class="step-box">
+    <span class="step-num">4</span><span class="step-title">确认并发起</span>
+    <p style="margin-top:6px;">点击"发起投票"按钮，投票将立即生效并显示在投票管理列表中</p>
+</div>
+
+<div class="note"><strong>验证点：</strong>发起后检查投票列表是否显示新投票，状态为"进行中"，参与范围显示"全体校友"/"仅理事"/"指定成员(N人)"。</div>
+
+<h3>3.2 校友参与投票</h3>
+<div class="step-box">
+    <span class="step-num">1</span><span class="step-title">退出管理员，登录校友账号</span>
+    <p style="margin-top:6px;">例如：<code>chensiyuan@gmail.com</code> / <code>user123</code></p>
+</div>
+<div class="step-box">
+    <span class="step-num">2</span><span class="step-title">进入"投票决策"页面</span>
+    <p style="margin-top:6px;">点击顶部导航"投票决策"，查看"进行中"标签页</p>
+</div>
+<div class="step-box">
+    <span class="step-num">3</span><span class="step-title">选择选项</span>
+    <p style="margin-top:6px;">点击想投的选项（会高亮显示），此时<strong>不会立即提交</strong></p>
+</div>
+<div class="step-box">
+    <span class="step-num">4</span><span class="step-title">点击"确认投票"按钮</span>
+    <p style="margin-top:6px;">确认后才会真正提交投票。系统提示"投票成功！"</p>
+</div>
+<div class="step-box">
+    <span class="step-num">5</span><span class="step-title">查看投票结果</span>
+    <p style="margin-top:6px;">投票后显示各选项的票数和百分比，您的选择旁标记"✓ 我的选择"</p>
+</div>
+
+<div class="success"><strong>验证点：</strong>投票后检查票数是否正确增加，"已投票"标签是否显示。</div>
+
+<h3>3.3 修改投票（截止前）</h3>
+<div class="step-box">
+    <span class="step-num">1</span><span class="step-title">在已投票的投票卡片中，点击"修改投票"按钮</span>
+    <p style="margin-top:6px;">进入修改模式，选项恢复可选状态</p>
+</div>
+<div class="step-box">
+    <span class="step-num">2</span><span class="step-title">选择新的选项，点击"确认修改"</span>
+    <p style="margin-top:6px;">系统提示"投票已修改！"，原选项票数-1，新选项票数+1</p>
+</div>
+<div class="step-box">
+    <span class="step-num">3</span><span class="step-title">也可点击"取消修改"放弃</span>
+</div>
+
+<div class="note"><strong>验证点：</strong>修改前后总票数不变，只是选项间票数转移。</div>
+
+<h3>3.4 投票到期自动关闭</h3>
+<div class="step-box">
+    <span class="step-num">1</span><span class="step-title">发起一个截止时间设为几分钟后的投票</span>
+</div>
+<div class="step-box">
+    <span class="step-num">2</span><span class="step-title">等待截止时间到达后刷新页面</span>
+</div>
+<div class="step-box">
+    <span class="step-num">3</span><span class="step-title">检查投票状态</span>
+    <p style="margin-top:6px;">应显示"已结束"标签，截止时间显示红色"已于 xxxx 截止"，不再显示"修改投票"按钮</p>
+</div>
+
+<div class="danger"><strong>验证点：</strong>到期后尝试通过API直接投票（应返回"投票已截止"错误）。</div>
+
+<h3>3.5 管理员手动结束投票</h3>
+<div class="step-box">
+    <span class="step-num">1</span><span class="step-title">登录管理员，进入管理后台 → 投票管理</span>
+</div>
+<div class="step-box">
+    <span class="step-num">2</span><span class="step-title">点击某个进行中投票旁的"结束投票"按钮</span>
+</div>
+<div class="step-box">
+    <span class="step-num">3</span><span class="step-title">确认投票状态变为"已结束"</span>
+</div>
+
+<h3>3.6 权限测试</h3>
+<table>
+    <tr><th>测试场景</th><th>预期结果</th></tr>
+    <tr><td>仅理事投票 → 校友账号查看</td><td>显示"此投票仅限理事参与"，无法投票</td></tr>
+    <tr><td>指定成员投票 → 未被选中的校友查看</td><td>显示"此投票仅限理事参与"，无法投票</td></tr>
+    <tr><td>校友尝试发起投票</td><td>无"管理后台"入口，无法发起</td></tr>
+    <tr><td>到期后尝试投票</td><td>服务器拒绝，返回"投票已截止"</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="register">4. 注册与审批流程</h2>
+
+<h3>4.1 新校友注册</h3>
+<div class="step-box">
+    <span class="step-num">1</span><span class="step-title">访问首页，点击"注册"或"立即加入校友会"</span>
+</div>
+<div class="step-box">
+    <span class="step-num">2</span><span class="step-title">第一步：填写基本信息</span>
+    <p style="margin-top:6px;">姓名*、邮箱*、手机号码*、密码*（≥6位）均为必填</p>
+</div>
+<div class="step-box">
+    <span class="step-num">3</span><span class="step-title">第二步：填写学业信息</span>
+    <p style="margin-top:6px;">学号、毕业年份、学院、专业</p>
+</div>
+<div class="step-box">
+    <span class="step-num">4</span><span class="step-title">第三步：职业信息 + 上传证明材料</span>
+    <p style="margin-top:6px;">可上传学位证书、在校证明等（最多5个文件，每个≤10MB，支持PDF/JPG/PNG）</p>
+</div>
+<div class="step-box">
+    <span class="step-num">5</span><span class="step-title">提交后显示成功页面</span>
+    <p style="margin-top:6px;">提示"理事会将在7个工作日内审核"</p>
+</div>
+
+<div class="note"><strong>验证点：</strong>注册后用该邮箱登录 → 应提示"账号审核中"。</div>
+
+<h3>4.2 管理员审批</h3>
+<div class="step-box">
+    <span class="step-num">1</span><span class="step-title">登录管理员，进入管理后台 → 待审核</span>
+</div>
+<div class="step-box">
+    <span class="step-num">2</span><span class="step-title">查看申请人完整信息（邮箱/手机/学号/学院/专业/单位/职位/简介）</span>
+</div>
+<div class="step-box">
+    <span class="step-num">3</span><span class="step-title">查看上传的证明材料（图片直接预览，文件可点击下载）</span>
+</div>
+<div class="step-box">
+    <span class="step-num">4</span><span class="step-title">点击"通过"或"拒绝"</span>
+</div>
+
+<div class="success"><strong>验证点：</strong>通过后用该账号登录 → 应可正常访问所有功能。</div>
+
+<!-- ============================================================ -->
+<h2 id="admin">5. 管理后台功能</h2>
+
+<h3>5.1 校友管理</h3>
+<ul>
+    <li>查看所有校友列表（支持搜索姓名/邮箱、按角色筛选）</li>
+    <li>编辑用户信息（姓名/邮箱/角色/状态）</li>
+    <li>删除用户（管理员自己不能删除自己）</li>
+</ul>
+
+<h3>5.2 新闻管理</h3>
+<ul>
+    <li>发布新闻（标题/分类/内容）</li>
+    <li>编辑已有新闻</li>
+    <li>删除新闻</li>
+</ul>
+
+<h3>5.3 投票管理</h3>
+<ul>
+    <li>发起新投票（含参与范围精确选人）</li>
+    <li>查看投票进度和结果</li>
+    <li>手动结束投票</li>
+    <li>删除投票</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="news">6. 新闻动态</h2>
+<div class="step-box">
+    <span class="step-num">1</span><span class="step-title">登录任意已通过账号，点击"新闻动态"</span>
+</div>
+<div class="step-box">
+    <span class="step-num">2</span><span class="step-title">浏览新闻列表，支持按分类筛选（母校动态/活动回顾/重要通知/校友故事/活动通知）</span>
+</div>
+<div class="step-box">
+    <span class="step-num">3</span><span class="step-title">点击新闻卡片查看详情</span>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="forum">7. 互动论坛</h2>
+<div class="step-box">
+    <span class="step-num">1</span><span class="step-title">点击"互动平台"进入论坛</span>
+</div>
+<div class="step-box">
+    <span class="step-num">2</span><span class="step-title">发布新帖 → 填写标题、选择分类、输入内容</span>
+    <p style="margin-top:6px;">可上传附件（图片/文件，最多5个，每个≤10MB）</p>
+</div>
+<div class="step-box">
+    <span class="step-num">3</span><span class="step-title">查看帖子详情，发表回复</span>
+</div>
+<div class="step-box">
+    <span class="step-num">4</span><span class="step-title">删除自己的帖子（管理员可删除任何帖子）</span>
+</div>
+
+<div class="note"><strong>验证点：</strong>帖子中的图片附件应在详情页显示缩略图预览。</div>
+
+<!-- ============================================================ -->
+<h2 id="profile">8. 个人中心</h2>
+<div class="step-box">
+    <span class="step-num">1</span><span class="step-title">点击右上角头像 → "个人中心"</span>
+</div>
+<div class="step-box">
+    <span class="step-num">2</span><span class="step-title">编辑个人资料：姓名、邮箱、手机、单位、职位、简介</span>
+</div>
+<div class="step-box">
+    <span class="step-num">3</span><span class="step-title">修改密码：输入旧密码 + 新密码</span>
+</div>
+<div class="step-box">
+    <span class="step-num">4</span><span class="step-title">查看"我的活动"：历史投票参与记录、论坛发帖记录</span>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="members">9. 校友名录</h2>
+<div class="step-box">
+    <span class="step-num">1</span><span class="step-title">点击"校友名录"</span>
+</div>
+<div class="step-box">
+    <span class="step-num">2</span><span class="step-title">搜索校友（按姓名/学院/专业）</span>
+</div>
+<div class="step-box">
+    <span class="step-num">3</span><span class="step-title">按毕业年份或学院筛选</span>
+</div>
+<div class="step-box">
+    <span class="step-num">4</span><span class="step-title">点击校友卡片查看详细信息</span>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="multi">10. 多用户并发测试</h2>
+
+<p>本系统使用SQLite服务端数据库，支持多用户同时使用。</p>
+
+<h3>测试方法</h3>
+<div class="step-box">
+    <span class="step-num">1</span><span class="step-title">打开两个不同的浏览器（或一个正常窗口 + 一个隐身窗口）</span>
+</div>
+<div class="step-box">
+    <span class="step-num">2</span><span class="step-title">分别登录不同账号（如管理员和校友）</span>
+</div>
+<div class="step-box">
+    <span class="step-num">3</span><span class="step-title">在一个窗口发起投票，在另一个窗口刷新查看是否出现</span>
+</div>
+<div class="step-box">
+    <span class="step-num">4</span><span class="step-title">两个账号同时对同一投票投票，检查票数是否正确</span>
+</div>
+
+<div class="success"><strong>预期结果：</strong>数据实时同步，票数准确，不会出现重复投票。</div>
+
+<!-- ============================================================ -->
+<h2 id="bug">11. 发现Bug？通过"互动平台"提交</h2>
+
+<p>如果您在测试过程中发现任何问题或Bug，请通过系统内置的<strong>"互动平台"（论坛）</strong>提交反馈：</p>
+
+<div class="step-box">
+    <span class="step-num">1</span><span class="step-title">登录您的测试账号</span>
+</div>
+<div class="step-box">
+    <span class="step-num">2</span><span class="step-title">点击顶部导航"互动平台"</span>
+</div>
+<div class="step-box">
+    <span class="step-num">3</span><span class="step-title">点击"发布新帖"</span>
+</div>
+<div class="step-box">
+    <span class="step-num">4</span><span class="step-title">填写Bug报告</span>
+    <ul style="margin-top:8px;">
+        <li><strong>标题</strong>：简要描述Bug，例如"【Bug】投票页面在手机上显示异常"</li>
+        <li><strong>分类</strong>：建议选择"综合讨论"或其他合适分类</li>
+        <li><strong>内容</strong>：请包含以下信息：
+            <ul>
+                <li>您使用的账号角色（管理员/理事/校友）</li>
+                <li>操作步骤（一步一步描述您做了什么）</li>
+                <li>期望结果（您认为应该发生什么）</li>
+                <li>实际结果（实际发生了什么）</li>
+                <li>使用的浏览器和设备</li>
+            </ul>
+        </li>
+        <li><strong>附件</strong>：可上传截图或屏幕录屏，帮助开发者快速定位问题</li>
+    </ul>
+</div>
+<div class="step-box">
+    <span class="step-num">5</span><span class="step-title">点击"发布"提交</span>
+</div>
+
+<div class="note"><strong>提示：</strong>管理员会定期查看论坛中的反馈帖子，并在帖子下方回复处理进展。请关注您发布的帖子的回复通知。</div>
+
+<div style="margin-top:48px;padding:24px;background:#f1f5f9;border-radius:12px;text-align:center;color:#64748b;font-size:13px;">
+    <p>西安交通大学新加坡校友会 · 系统测试指南 · 2026年3月</p>
+    <p style="margin-top:4px;">如有问题请联系系统管理员</p>
+</div>
+
+</div>
+</body>
+</html>
