@@ -58,11 +58,12 @@
     <ol>
         <li><a href="#start">访问系统</a></li>
         <li><a href="#accounts">测试账号一览</a></li>
-        <li><a href="#vote">投票功能测试（重点）</a></li>
+        <li><a href="#vote">投票功能测试</a></li>
         <li><a href="#register">注册与审批流程</a></li>
         <li><a href="#admin">管理后台功能</a></li>
         <li><a href="#news">新闻动态</a></li>
         <li><a href="#forum">互动论坛</a></li>
+        <li><a href="#dues">会费缴纳</a></li>
         <li><a href="#profile">个人中心</a></li>
         <li><a href="#members">校友名录</a></li>
         <li><a href="#multi">多用户并发测试</a></li>
@@ -128,7 +129,7 @@
 </table>
 
 <!-- ============================================================ -->
-<h2 id="vote">3. 投票功能测试（重点）</h2>
+<h2 id="vote">3. 投票功能测试</h2>
 
 <div class="danger"><strong>投票功能即将投入使用，请重点测试以下流程。</strong></div>
 
@@ -338,7 +339,55 @@
 <div class="note"><strong>验证点：</strong>帖子中的图片附件应在详情页显示缩略图预览。</div>
 
 <!-- ============================================================ -->
-<h2 id="profile">8. 个人中心</h2>
+<h2 id="dues">8. 会费缴纳</h2>
+
+<h3>8.1 校友缴纳会费</h3>
+<div class="step-box">
+    <span class="step-num">1</span><span class="step-title">登录校友账号，点击导航栏"会费缴纳"</span>
+</div>
+<div class="step-box">
+    <span class="step-num">2</span><span class="step-title">查看会员资格状态</span>
+    <p style="margin-top:6px;">页面顶部显示会员起始日期和到期日期（如：2026年1月1日 至 2026年12月31日），以及当前状态（有效/已过期）</p>
+</div>
+<div class="step-box">
+    <span class="step-num">3</span><span class="step-title">查看当年度会费信息</span>
+    <p style="margin-top:6px;">显示年度、金额（如 SGD 50）、截止日期，以及PayNow转账信息（号码、收款人、金额、二维码）</p>
+</div>
+<div class="step-box">
+    <span class="step-num">4</span><span class="step-title">通过银行App扫码/手动转账后，上传付款截图</span>
+    <p style="margin-top:6px;">点击上传区域或拖拽截图文件，填写备注（选填），点击"提交缴费凭证"</p>
+</div>
+<div class="step-box">
+    <span class="step-num">5</span><span class="step-title">提交后状态变为"已提交，等待确认"（黄色）</span>
+</div>
+
+<div class="note"><strong>验证点：</strong>提交后刷新页面，确认状态显示为"待确认"；页面底部"缴费记录"表格中有新记录。</div>
+
+<h3>8.2 管理员确认缴费</h3>
+<div class="step-box">
+    <span class="step-num">1</span><span class="step-title">登录管理员账号，进入"管理后台 → 会费管理"</span>
+</div>
+<div class="step-box">
+    <span class="step-num">2</span><span class="step-title">查看缴费记录列表，点击凭证链接查看校友上传的付款截图</span>
+</div>
+<div class="step-box">
+    <span class="step-num">3</span><span class="step-title">核实无误后点击"确认"按钮</span>
+    <p style="margin-top:6px;">确认后系统自动将该校友的会员资格延长一年</p>
+</div>
+
+<div class="success"><strong>验证点：</strong>确认后切换到校友账号，查看会费页面 → 状态应变为绿色"已缴纳"，会员到期日期自动延长一年。</div>
+
+<h3>8.3 管理员设置会费标准</h3>
+<div class="step-box">
+    <span class="step-num">1</span><span class="step-title">在"管理后台 → 会费管理"顶部的"会费设置"区域</span>
+    <p style="margin-top:6px;">可修改：年度、金额、货币、PayNow号码、收款人名称、说明、截止日期</p>
+</div>
+<div class="step-box">
+    <span class="step-num">2</span><span class="step-title">点击"保存设置"，所有校友看到的会费信息将即时更新</span>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="profile">9. 个人中心</h2>
 <div class="step-box">
     <span class="step-num">1</span><span class="step-title">点击右上角头像 → "个人中心"</span>
 </div>
@@ -353,7 +402,7 @@
 </div>
 
 <!-- ============================================================ -->
-<h2 id="members">9. 校友名录</h2>
+<h2 id="members">10. 校友名录</h2>
 <div class="step-box">
     <span class="step-num">1</span><span class="step-title">点击"校友名录"</span>
 </div>
@@ -368,7 +417,7 @@
 </div>
 
 <!-- ============================================================ -->
-<h2 id="multi">10. 多用户并发测试</h2>
+<h2 id="multi">11. 多用户并发测试</h2>
 
 <p>本系统使用SQLite服务端数据库，支持多用户同时使用。</p>
 
@@ -389,7 +438,7 @@
 <div class="success"><strong>预期结果：</strong>数据实时同步，票数准确，不会出现重复投票。</div>
 
 <!-- ============================================================ -->
-<h2 id="bug">11. 发现Bug？通过"互动平台"提交</h2>
+<h2 id="bug">12. 发现Bug？通过"互动平台"提交</h2>
 
 <p>如果您在测试过程中发现任何问题或Bug，请通过系统内置的<strong>"互动平台"（论坛）</strong>提交反馈：</p>
 
